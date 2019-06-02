@@ -1,0 +1,21 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "COMPX223_d3_1285310_overkill", "COMPX223_d3_1285310_overkill\COMPX223_d3_1285310_overkill.csproj", "{318E2013-F020-434A-BAC4-21EDA395376C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{318E2013-F020-434A-BAC4-21EDA395376C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{318E2013-F020-434A-BAC4-21EDA395376C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{318E2013-F020-434A-BAC4-21EDA395376C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{318E2013-F020-434A-BAC4-21EDA395376C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.VersionControlPolicy = $1
+	EndGlobalSection
+EndGlobal
