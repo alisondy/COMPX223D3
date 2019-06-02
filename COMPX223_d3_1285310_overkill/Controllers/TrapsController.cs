@@ -21,7 +21,7 @@ namespace COMPX223_d3_1285310_overkill.Controllers
         // GET: Traps
         public async Task<IActionResult> Index()
         {
-            var myTrapAppContext = _context.Trap.Include(t => t.TrapType);
+            var myTrapAppContext = _context.Trap.Include(t => t.TrapType).Include(t => t.TrapUser);
             return View(await myTrapAppContext.ToListAsync());
         }
 
@@ -35,6 +35,7 @@ namespace COMPX223_d3_1285310_overkill.Controllers
 
             var trap = await _context.Trap
                 .Include(t => t.TrapType)
+                .Include(t => t.TrapUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (trap == null)
             {
@@ -48,6 +49,7 @@ namespace COMPX223_d3_1285310_overkill.Controllers
         public IActionResult Create()
         {
             ViewData["TrapTypeId"] = new SelectList(_context.TrapType, "Id", "Id");
+            ViewData["TrapUserId"] = new SelectList(_context.TrapUser, "Id", "Id");
             return View();
         }
 
@@ -65,6 +67,7 @@ namespace COMPX223_d3_1285310_overkill.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["TrapTypeId"] = new SelectList(_context.TrapType, "Id", "Id", trap.TrapTypeId);
+            ViewData["TrapUserId"] = new SelectList(_context.TrapUser, "Id", "Id", trap.TrapUserId);
             return View(trap);
         }
 
@@ -82,6 +85,7 @@ namespace COMPX223_d3_1285310_overkill.Controllers
                 return NotFound();
             }
             ViewData["TrapTypeId"] = new SelectList(_context.TrapType, "Id", "Id", trap.TrapTypeId);
+            ViewData["TrapUserId"] = new SelectList(_context.TrapUser, "Id", "Id", trap.TrapUserId);
             return View(trap);
         }
 
@@ -118,6 +122,7 @@ namespace COMPX223_d3_1285310_overkill.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["TrapTypeId"] = new SelectList(_context.TrapType, "Id", "Id", trap.TrapTypeId);
+            ViewData["TrapUserId"] = new SelectList(_context.TrapUser, "Id", "Id", trap.TrapUserId);
             return View(trap);
         }
 
@@ -131,6 +136,7 @@ namespace COMPX223_d3_1285310_overkill.Controllers
 
             var trap = await _context.Trap
                 .Include(t => t.TrapType)
+                .Include(t => t.TrapUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (trap == null)
             {

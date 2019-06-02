@@ -14,7 +14,7 @@ namespace COMPX223_d3_1285310_overkill.Models
         public int TrapUserId { get; set; }
 
         [ForeignKey("TrapUserId")]
-        public ICollection<TrapUser> TrapUsers { get; set; }
+        public TrapUser TrapUser { get; set; }
 
         [ForeignKey("TrapTypeId")]
         public TrapType TrapType { get; set; }
