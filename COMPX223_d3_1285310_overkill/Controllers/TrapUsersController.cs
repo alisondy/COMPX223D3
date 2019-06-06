@@ -47,7 +47,18 @@ namespace COMPX223_d3_1285310_overkill.Controllers
         // GET: TrapUsers/Create
         public IActionResult Create()
         {
-            ViewData["LandownerId"] = new SelectList(_context.Landowner, "Id", "Id");
+            ViewData["LandownerId"] = /*new SelectList(_context.Landowner, "Id", "FirstName" + " " + "LastName");*/
+
+
+            new SelectList((from s in _context.Landowner
+                            select new
+                            {
+                                Id = s.Id,
+                                FullName = s.FirstName + " " + s.LastName
+                            }),
+       "Id",
+       "FullName",
+       null);
             return View();
         }
 
