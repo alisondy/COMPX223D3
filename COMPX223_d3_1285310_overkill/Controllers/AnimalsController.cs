@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using COMPX223_d3_1285310_overkill.Models;
+using Microsoft.AspNetCore.Http;
+using System.Diagnostics;
+using System.IO;
 
 namespace COMPX223_d3_1285310_overkill.Controllers
 {
@@ -53,15 +56,27 @@ namespace COMPX223_d3_1285310_overkill.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Image")] Animal animal)
+        public async Task<IActionResult> Create(AnimalViewModel animalView)
         {
+
             if (ModelState.IsValid)
             {
-                _context.Add(animal);
+                var animal = new Animal
+                {
+                    Name = animalView.Name,
+                    Description = animalView.Description
+
+                };
+                using (var memoryStream = new MemoryStream())
+                {
+                    await animalView.Image.CopyToAsync(memoryStream);
+                    animal.Image = memoryStream.ToArray();
+                }
+                    _context.Add(animal);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(animal);
+            return View(animalView);
         }
 
         // GET: Animals/Edit/5
