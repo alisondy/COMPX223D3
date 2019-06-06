@@ -1,4 +1,4 @@
-@model IEnumerable<COMPX223_d3_1285310_overkill.Models.TrapCatchEvent>
+@model IEnumerable<COMPX223_d3_1285310_overkill.Models.Manager>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,16 +13,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.date)
+                @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Trap)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Animal)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Manager)
+                @Html.DisplayNameFor(model => model.Password)
             </th>
             <th></th>
         </tr>
@@ -31,16 +25,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.date)
+                @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Trap.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Animal.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Manager.Name)
+                @Html.DisplayFor(modelItem => item.Password)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

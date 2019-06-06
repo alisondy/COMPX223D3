@@ -15,5 +15,6 @@ namespace COMPX223_d3_1285310_overkill.Models
         public int StreetNumber { get; set; }
 
         public virtual TrapUser TrapUser { get; set; }
+
     }
 }

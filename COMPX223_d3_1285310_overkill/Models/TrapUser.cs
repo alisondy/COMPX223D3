@@ -17,5 +17,7 @@ namespace COMPX223_d3_1285310_overkill.Models
         [ForeignKey("LandownerId")]
         public Landowner Landowner { get; set; }
 
+        public virtual Trap Trap { get; set; }
+
     }
 }

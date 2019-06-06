@@ -4,14 +4,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace COMPX223_d3_1285310_overkill.Models
 {
 
-    public class TrapCatchEvent
+    public class TrapCatchEventView
     {
         public int Id { get; set; }
         [DataType(DataType.Date)]
         public DateTime date { get; set; }
         public int TrapId { get; set; }
         public int AnimalId { get; set; }
-        public int ManagerId { get; set; }
+        public string ManagerName { get; set; }
+        public string ManagerPassword { get; set; }
+
 
         [ForeignKey("TrapId")]
         public Trap Trap { get; set; }
@@ -21,6 +23,5 @@ namespace COMPX223_d3_1285310_overkill.Models
 
         [ForeignKey("ManagerId")]
         public Manager Manager { get; set; }
-
     }
 }

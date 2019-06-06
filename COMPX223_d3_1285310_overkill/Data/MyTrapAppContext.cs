@@ -7,6 +7,8 @@ using COMPX223_d3_1285310_overkill.Models;
 
     public class MyTrapAppContext : DbContext
     {
+        public int CurrentUser { get; set; }
+
         public MyTrapAppContext (DbContextOptions<MyTrapAppContext> options)
             : base(options)
         {
@@ -23,4 +25,6 @@ using COMPX223_d3_1285310_overkill.Models;
         public DbSet<COMPX223_d3_1285310_overkill.Models.Trap> Trap { get; set; }
 
         public DbSet<COMPX223_d3_1285310_overkill.Models.TrapCatchEvent> TrapCatchEvent { get; set; }
+
+        public DbSet<COMPX223_d3_1285310_overkill.Models.Manager> Manager { get; set; }
     }

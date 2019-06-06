@@ -1,4 +1,5 @@
 using System;
+using System.Web;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,7 +22,7 @@ namespace COMPX223_d3_1285310_overkill.Controllers
         // GET: TrapCatchEvents
         public async Task<IActionResult> Index()
         {
-            var myTrapAppContext = _context.TrapCatchEvent.Include(t => t.Animal).Include(t => t.Trap);
+            var myTrapAppContext = _context.TrapCatchEvent.Include(t => t.Animal).Include(t => t.Manager).Include(t => t.Trap);
             return View(await myTrapAppContext.ToListAsync());
         }
 
@@ -35,6 +36,7 @@ namespace COMPX223_d3_1285310_overkill.Controllers
 
             var trapCatchEvent = await _context.TrapCatchEvent
                 .Include(t => t.Animal)
+                .Include(t => t.Manager)
                 .Include(t => t.Trap)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (trapCatchEvent == null)
@@ -48,8 +50,9 @@ namespace COMPX223_d3_1285310_overkill.Controllers
         // GET: TrapCatchEvents/Create
         public IActionResult Create()
         {
-            ViewData["AnimalId"] = new SelectList(_context.Animal, "Id", "Id");
-            ViewData["TrapId"] = new SelectList(_context.Trap, "Id", "Id");
+            ViewData["AnimalId"] = new SelectList(_context.Animal, "Id", "Name");
+            ViewData["ManagerId"] = new SelectList(_context.Manager, "Id", "Name");
+            ViewData["TrapId"] = new SelectList(_context.Trap, "Id", "Name");
             return View();
         }
 
@@ -58,16 +61,28 @@ namespace COMPX223_d3_1285310_overkill.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,date,TrapId,AnimalId")] TrapCatchEvent trapCatchEvent)
+        public async Task<IActionResult> Create(TrapCatchEventView trapCatchEvent)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(trapCatchEvent);
+                IQueryable<Manager> query = _context.Manager.Where(b => b.Name == trapCatchEvent.ManagerName && b.Password == trapCatchEvent.ManagerPassword);
+                if (query.Count() == 0)
+                {
+                    return BadRequest("Bad Username Password Combo");
+                }
+                var catchEvent = new TrapCatchEvent
+                {
+                    date = trapCatchEvent.date,
+                    AnimalId = trapCatchEvent.AnimalId,
+                    ManagerId = query.First().Id,
+                    TrapId = trapCatchEvent.TrapId
+                };
+                _context.Add(catchEvent);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AnimalId"] = new SelectList(_context.Animal, "Id", "Id", trapCatchEvent.AnimalId);
-            ViewData["TrapId"] = new SelectList(_context.Trap, "Id", "Id", trapCatchEvent.TrapId);
+            ViewData["AnimalId"] = new SelectList(_context.Animal, "Id", "Name", trapCatchEvent.AnimalId);
+            ViewData["TrapId"] = new SelectList(_context.Trap, "Id", "Name", trapCatchEvent.TrapId);
             return View(trapCatchEvent);
         }
 
@@ -84,8 +99,9 @@ namespace COMPX223_d3_1285310_overkill.Controllers
             {
                 return NotFound();
             }
-            ViewData["AnimalId"] = new SelectList(_context.Animal, "Id", "Id", trapCatchEvent.AnimalId);
-            ViewData["TrapId"] = new SelectList(_context.Trap, "Id", "Id", trapCatchEvent.TrapId);
+            ViewData["AnimalId"] = new SelectList(_context.Animal, "Id", "Name", trapCatchEvent.AnimalId);
+            ViewData["ManagerId"] = new SelectList(_context.Manager, "Id", "Name", trapCatchEvent.ManagerId);
+            ViewData["TrapId"] = new SelectList(_context.Trap, "Id", "Name", trapCatchEvent.TrapId);
             return View(trapCatchEvent);
         }
 
@@ -94,7 +110,7 @@ namespace COMPX223_d3_1285310_overkill.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,date,TrapId,AnimalId")] TrapCatchEvent trapCatchEvent)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,date,TrapId,AnimalId,ManagerId")] TrapCatchEvent trapCatchEvent)
         {
             if (id != trapCatchEvent.Id)
             {
@@ -121,8 +137,9 @@ namespace COMPX223_d3_1285310_overkill.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AnimalId"] = new SelectList(_context.Animal, "Id", "Id", trapCatchEvent.AnimalId);
-            ViewData["TrapId"] = new SelectList(_context.Trap, "Id", "Id", trapCatchEvent.TrapId);
+            ViewData["AnimalId"] = new SelectList(_context.Animal, "Id", "Name", trapCatchEvent.AnimalId);
+            ViewData["ManagerId"] = new SelectList(_context.Manager, "Id", "Name", trapCatchEvent.ManagerId);
+            ViewData["TrapId"] = new SelectList(_context.Trap, "Id", "Name", trapCatchEvent.TrapId);
             return View(trapCatchEvent);
         }
 
@@ -136,6 +153,7 @@ namespace COMPX223_d3_1285310_overkill.Controllers
 
             var trapCatchEvent = await _context.TrapCatchEvent
                 .Include(t => t.Animal)
+                .Include(t => t.Manager)
                 .Include(t => t.Trap)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (trapCatchEvent == null)
